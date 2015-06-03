@@ -42,8 +42,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- Tile icon for Win8 (144x144) -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
 
-  <!-- build:css styles/main.css -->
-  <link rel="stylesheet" href="styles/main.css">
+  <!-- build:css /styles/vendor.css-->
+  <!-- bower:css-->
+  <!-- endbower-->
+  <!-- endbuild-->
+
+  <!-- Shimming styles outside of polymer-element-->
+  <!-- https://www.polymer-project.org/docs/polymer/styling.html#sdcss-->
+  <!-- build:css /styles/app.css-->
+  <link rel="stylesheet" href="styles/main.css" shim-shadowdom>
   <!-- endbuild-->
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents.min.js -->

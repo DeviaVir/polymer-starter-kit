@@ -46,13 +46,16 @@ var styleTask = function (stylesPath, srcs) {
 };
 
 // Compile and Automatically Prefix Stylesheets
-gulp.task('styles', function () {
-  return styleTask('styles', ['**/*.css']);
-});
+gulp.task('styles',
+  require('./gulp/tasks/styles-sass')(gulp, $, require('./gulp/config'), 'styles'));
+gulp.task('styles:deep',
+  require('./gulp/tasks/styles-sass')(gulp, $, require('./gulp/config'), 'stylesDeep'));
 
-gulp.task('elements', function () {
-  return styleTask('elements', ['**/*.css']);
-});
+// Compile and Automatically Prefix Stylesheets for elements
+gulp.task('elements',
+  require('./gulp/tasks/styles-sass')(gulp, $, require('./gulp/config'), 'elements'));
+gulp.task('elements:deep',
+  require('./gulp/tasks/styles-sass')(gulp, $, require('./gulp/config'), 'elementsDeep'));
 
 // Lint JavaScript
 gulp.task('jshint', function () {
@@ -178,7 +181,7 @@ gulp.task('precache', function (callback) {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 // Watch Files For Changes & Reload
-gulp.task('serve', ['styles', 'elements', 'images'], function () {
+gulp.task('serve', ['styles', 'styles:deep', 'elements', 'elements:deep', 'images'], function () {
   browserSync({
     notify: false,
     // Run as an https by uncommenting 'https: true'
@@ -192,6 +195,11 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
       }
     }
   });
+
+  gulp.watch(['app/styles/*.scss'], ['styles']);
+  gulp.watch(['app/styles/**/*.scss'], ['styles:deep', 'styles']);
+  gulp.watch(['app/elements/*.scss'], ['elements:deep']);
+  gulp.watch(['app/elements/**/*.scss'], ['elements:deep', 'elements']);
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
